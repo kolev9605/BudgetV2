@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.sleek-gray {
+  color: #A5A5AF;
+}
+
+.forest {
+  color: #015249;
+}
+
+.marine {
+  color: #57BC90;
+}
+
+.feather {
+  color: #77C9D4;
+}
+
+.bg-sleek-gray {
+  background-color: #A5A5AF;
+}
+
+.bg-forest {
+  background-color: #015249;
+}
+
+.bg-marine {
+  background-color: #57BC90;
+}
+
+.bg-feather {
+  background-color: #77C9D4;
+}
