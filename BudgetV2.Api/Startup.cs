@@ -1,27 +1,27 @@
-using AutoMapper;
-using BudgetV2.Api.Authentication;
-using BudgetV2.Api.Helpers;
-using BudgetV2.Data;
-using BudgetV2.Data.Models;
-using BudgetV2.Infrastructure;
-using BudgetV2.Services;
-using BudgetV2.Services.Contracts;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Reflection;
-using System.Text;
-
 namespace BudgetV2.Api
 {
+    using AutoMapper;
+    using BudgetV2.Api.Authentication;
+    using BudgetV2.Api.Helpers;
+    using BudgetV2.Data;
+    using BudgetV2.Data.Models;
+    using BudgetV2.Infrastructure;
+    using BudgetV2.Services;
+    using BudgetV2.Services.Contracts;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+    using System;
+    using System.Reflection;
+    using System.Text;
+
     public class Startup
     {
         private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";

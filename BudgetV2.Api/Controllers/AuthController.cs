@@ -49,12 +49,12 @@
 
         //POST api/auth/register
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody]RegisterViewModel model)
+        public async Task<ActionResult> Register([FromBody]RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Username, Email = model.Username };
-                var result = await userManager.CreateAsync(user, model.Password);
+                var user = new User { UserName = registerViewModel.Username, Email = registerViewModel.Username };
+                var result = await userManager.CreateAsync(user, registerViewModel.Password);
                 if (result.Succeeded)
                 {
                     //await this.userCategoryService.SaveInitialUserCategoriesAsync(user.Id);

@@ -11,6 +11,7 @@ class Auth extends Component {
     
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
+        this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
 
         this.state = {
             email: '',
@@ -22,8 +23,7 @@ class Auth extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        console.log('ONSUBMIT: ' + this.state.isLogin)
-        if (this.isLogin) {
+        if (this.state.isLogin) {
             this.props.onLogin(this.state.email, this.state.password);
         } else {
             this.props.onRegister(this.state.email, this.state.password, this.state.confirmPassword);
@@ -99,8 +99,7 @@ class Auth extends Component {
             <Row>
                 <FormGroup 
                     controlId="formHorizontalPassword"
-                    validationState={this.getConfirmPasswordValidationState()}
-                >
+                    validationState={this.getConfirmPasswordValidationState()}>
                     <Col componentClass={ControlLabel} sm={2} smOffset={1}>
                         Confirm Password
                     </Col>
@@ -109,8 +108,7 @@ class Auth extends Component {
                             type="password" 
                             placeholder="Confirm Password" 
                             value={this.state.confirmPassword}
-                            onChange={this.handleConfirmPasswordChange}
-                        />
+                            onChange={this.handleConfirmPasswordChange}/>
                     </Col>
                 </FormGroup>
             </Row>;
@@ -133,8 +131,7 @@ class Auth extends Component {
                 <Row>
                     <FormGroup 
                         controlId="formHorizontalEmail"
-                        validationState={this.getEmailValidationState()}
-                    >
+                        validationState={this.getEmailValidationState()}>
                         <Col componentClass={ControlLabel} sm={2} smOffset={1}>
                             Email
                         </Col>
@@ -143,16 +140,14 @@ class Auth extends Component {
                                 type="email" 
                                 placeholder="Email" 
                                 value={this.state.email}
-                                onChange={this.handleEmailChange}
-                            />
+                                onChange={this.handleEmailChange}/>
                         </Col>
                     </FormGroup>
                 </Row>
                 <Row>
                     <FormGroup 
                         controlId="formHorizontalPassword"
-                        validationState={this.getPasswordValidationState()}
-                    >
+                        validationState={this.getPasswordValidationState()}>
                         <Col componentClass={ControlLabel} sm={2} smOffset={1}>
                             Password
                         </Col>
@@ -161,8 +156,7 @@ class Auth extends Component {
                                 type="password" 
                                 placeholder="Password" 
                                 value={this.state.password}
-                                onChange={this.handlePasswordChange}
-                            />
+                                onChange={this.handlePasswordChange}/>
                         </Col>
                     </FormGroup>
                 </Row>
@@ -174,7 +168,6 @@ class Auth extends Component {
                             {switchAuthButton}
                         </Col>
                     </FormGroup>
-
                 </Row>
             </Form>
         );
@@ -188,7 +181,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-
-
 export default connect(null, mapDispatchToProps)(Auth);
-

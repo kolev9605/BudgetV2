@@ -28,8 +28,8 @@ export const login = (email, password) => {
         const authData = {
             username: email,
             password: password
-        }
-        console.log('LOGIN'+authData);
+        };
+
         axios.post('/auth/login', authData)
             .then(response => {
                 console.log(response);
@@ -38,7 +38,7 @@ export const login = (email, password) => {
             .catch(err => {
                 console.log(err);
                 dispatch(authFail(err));
-            })
+            });
     }
 }
 
@@ -50,8 +50,8 @@ export const register = (email, password, confirmPassword) => {
             username: email,
             password: password,
             confirmPassword: confirmPassword
-        }
-        console.log('REGISTER:'+authData);
+        };
+
         axios.post('/auth/register', authData)
             .then(response => {
                 console.log(response);
@@ -60,6 +60,6 @@ export const register = (email, password, confirmPassword) => {
             .catch(err => {
                 console.log(err);
                 dispatch(authFail(err));
-            })
+            });
     }
 }
