@@ -1,6 +1,5 @@
 using AutoMapper;
 using BudgetV2.Api.Authentication;
-using BudgetV2.Api.Extensions;
 using BudgetV2.Api.Helpers;
 using BudgetV2.Data;
 using BudgetV2.Data.Models;
@@ -9,9 +8,7 @@ using BudgetV2.Services;
 using BudgetV2.Services.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -20,7 +17,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Net;
 using System.Reflection;
 using System.Text;
 
@@ -30,6 +26,7 @@ namespace BudgetV2.Api
     {
         private const string SecretKey = "iNivDmHLpUA223sqsfhqGbMRdRj1PVkH";
         private readonly SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+
 
         public Startup(IConfiguration configuration)
         {
@@ -46,9 +43,7 @@ namespace BudgetV2.Api
             services.AddDbContext<BudgetDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddTransient<IJwtFactory, JwtFactory>();
-
-            this.ConfigureAuth(services);
+            this.ConfigureAuthService(services);
 
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ITransactionService, TransactionService>();
@@ -84,24 +79,6 @@ namespace BudgetV2.Api
                 app.UseHsts();
             }
 
-            //app.UseExceptionHandler(
-            //    builder =>
-            //    {
-            //        builder.Run(
-            //            async context =>
-            //            {
-            //                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            //                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
-            //                var error = context.Features.Get<IExceptionHandlerFeature>();
-            //                if (error != null)
-            //                {
-            //                    context.Response.AddApplicationError(error.Error.Message);
-            //                    await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
-            //                }
-            //            });
-            //    });
-
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -125,8 +102,10 @@ namespace BudgetV2.Api
             });
         }
 
-        private void ConfigureAuth(IServiceCollection services)
+        private void ConfigureAuthService(IServiceCollection services)
         {
+            services.AddTransient<IJwtFactory, JwtFactory>();
+
             // Configure JwtIssuerOptions
             services.Configure<JwtIssuerOptions>(options =>
             {
@@ -169,8 +148,6 @@ namespace BudgetV2.Api
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(Constants.JwtClaimIdentifierRol, Constants.JwtClaimsApiAccess));
             });
-
-
 
             var builder = services.AddIdentity<User, IdentityRole>(options =>
             {

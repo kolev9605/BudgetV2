@@ -14,13 +14,21 @@ class Auth extends Component {
 
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            confirmPassword: '',
+            isLogin: true
         };
     }
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onAuth(this.state.email, this.state.password);
+        console.log('ONSUBMIT: ' + this.state.isLogin)
+        if (this.isLogin) {
+            this.props.onLogin(this.state.email, this.state.password);
+        } else {
+            this.props.onRegister(this.state.email, this.state.password, this.state.confirmPassword);
+        }
+        
     }
 
     handleEmailChange = (e) => {
@@ -31,16 +39,28 @@ class Auth extends Component {
         this.setState({ password: e.target.value });
     }
 
+    handleConfirmPasswordChange = (e) => {
+        this.setState({ confirmPassword: e.target.value });
+    }
+
     validateEmail = (email) => {
         var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
     
     getPasswordValidationState = () => {
-        if (this.state.password.length < 6 || this.state.password.length > 15) {
-            return 'error';
-        } else {
+        if (this.state.password.length >= 6 && this.state.password.length <= 15) {
             return 'success';
+        } else {
+            return 'error';
+        }
+    }
+
+    getConfirmPasswordValidationState = () => {
+        if (this.state.confirmPassword.length >= 6 && this.state.confirmPassword.length <= 15 && this.state.password === this.state.confirmPassword) {
+            return 'success';
+        } else {
+            return 'error';
         }
     }
 
@@ -56,7 +76,15 @@ class Auth extends Component {
     isValidSubmit = () => {
         let isValid = this.getEmailValidationState() === 'success' && this.getPasswordValidationState() === 'success';
 
+        if (this.state.isLogin === false) {
+            return isValid && this.getConfirmPasswordValidationState() === 'success';
+        }
+
         return isValid;
+    }
+
+    handleSwitchAuth = () => {
+        this.setState({isLogin: !this.state.isLogin});
     }
 
     render() {
@@ -65,12 +93,40 @@ class Auth extends Component {
                 Sign in
             </Button>;
 
+        let confirmPasswordInput = 
+            this.state.isLogin ? 
+            null :
+            <Row>
+                <FormGroup 
+                    controlId="formHorizontalPassword"
+                    validationState={this.getConfirmPasswordValidationState()}
+                >
+                    <Col componentClass={ControlLabel} sm={2} smOffset={1}>
+                        Confirm Password
+                    </Col>
+                    <Col sm={4}>
+                        <FormControl 
+                            type="password" 
+                            placeholder="Confirm Password" 
+                            value={this.state.confirmPassword}
+                            onChange={this.handleConfirmPasswordChange}
+                        />
+                    </Col>
+                </FormGroup>
+            </Row>;
+
+
         if (!this.isValidSubmit()) {
             submitButton = 
             <Button type="submit" disabled bsStyle="danger">
                 Sign in
             </Button>;
         }
+
+        let switchAuthButton = 
+        <Button bsStyle="link" onClick={this.handleSwitchAuth}>
+            {this.state.isLogin ? 'Register now!' : 'Login now!'}
+        </Button>
 
         return (
             <Form horizontal className='auth' onSubmit={this.onSubmit}>
@@ -110,12 +166,15 @@ class Auth extends Component {
                         </Col>
                     </FormGroup>
                 </Row>
+                {confirmPasswordInput}
                 <Row>
                     <FormGroup>
                         <Col sm={3} smOffset={3}>
                             {submitButton}
+                            {switchAuthButton}
                         </Col>
                     </FormGroup>
+
                 </Row>
             </Form>
         );
@@ -124,7 +183,8 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password) => dispatch(actions.auth(email, password))
+        onLogin: (email, password) => dispatch(actions.login(email, password)),
+        onRegister: (email, password, confirmPassword) => dispatch(actions.register(email, password, confirmPassword))
     }
 }
 

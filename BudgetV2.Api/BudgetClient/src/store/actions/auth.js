@@ -22,15 +22,36 @@ export const authFail = (error) => {
     }
 }
 
-export const auth = (email, password) => {
+export const login = (email, password) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
             username: email,
-            password: password,
-            confirmPassword: password
+            password: password
         }
-        console.log(authData);
+        console.log('LOGIN'+authData);
+        axios.post('/auth/login', authData)
+            .then(response => {
+                console.log(response);
+                dispatch(authSuccess(response.data));
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(authFail(err));
+            })
+    }
+}
+
+export const register = (email, password, confirmPassword) => {
+    return dispatch => {
+        dispatch(authStart());
+        
+        const authData = {
+            username: email,
+            password: password,
+            confirmPassword: confirmPassword
+        }
+        console.log('REGISTER:'+authData);
         axios.post('/auth/register', authData)
             .then(response => {
                 console.log(response);

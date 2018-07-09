@@ -1,6 +1,6 @@
 {
-  "short_name": "BudgetV2",
-  "name": "BudgetV2",
+  "short_name": "BudgetV2.Api",
+  "name": "BudgetV2.Api",
   "icons": [
     {
       "src": "favicon.ico",

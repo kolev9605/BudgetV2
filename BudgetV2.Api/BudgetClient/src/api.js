@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 let axiosInstance = axios.create({
-  baseURL: 'https://localhost:5001/api'
+  baseURL: 'https://localhost:44369/api'
 });
 
 

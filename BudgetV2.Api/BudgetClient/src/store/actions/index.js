@@ -1,3 +1,3 @@
 export {
-    auth
+    login, register
 } from './auth'
