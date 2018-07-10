@@ -120,7 +120,7 @@ class Auth extends Component {
 
         if (!this.isValidSubmit()) {
             submitButton = 
-            <Button type="submit" disabled bsStyle="danger">
+            <Button type="submit" disabled bsStyle="danger" className>
                 Sign {this.state.isLogin ? "In" : "Up"}
             </Button>;
         }
