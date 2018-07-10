@@ -26,7 +26,7 @@ function navigation() {
                 <Nav pullRight>
                     <LinkContainer to='/auth' exact>
                         <NavItem eventKey={2}>                       
-                                Login
+                                Sign in
                         </NavItem>
                     </LinkContainer>
                 </Nav>

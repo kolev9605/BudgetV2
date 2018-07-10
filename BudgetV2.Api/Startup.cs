@@ -2,6 +2,7 @@ namespace BudgetV2.Api
 {
     using AutoMapper;
     using BudgetV2.Api.Authentication;
+    using BudgetV2.Api.Authentication.Contracts;
     using BudgetV2.Api.Helpers;
     using BudgetV2.Data;
     using BudgetV2.Data.Models;

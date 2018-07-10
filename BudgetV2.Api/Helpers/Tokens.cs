@@ -1,6 +1,7 @@
 ﻿namespace BudgetV2.Api.Helpers
 {
     using BudgetV2.Api.Authentication;
+    using BudgetV2.Api.Authentication.Contracts;
     using Newtonsoft.Json;
     using System.Linq;
     using System.Security.Claims;

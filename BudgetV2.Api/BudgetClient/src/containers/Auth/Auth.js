@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {Form, FormGroup, FormControl, Col, ControlLabel, Button, Row} from 'react-bootstrap';
 import './Auth.css';
 import * as actions from '../../store/actions/index';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import validator from 'validator';
+import { Well } from 'react-bootstrap';
 
 class Auth extends Component {
 
@@ -43,10 +45,10 @@ class Auth extends Component {
         this.setState({ confirmPassword: e.target.value });
     }
 
-    validateEmail = (email) => {
-        var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(String(email).toLowerCase());
-    }
+    // validateEmail = (email) => {
+    //     var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    //     return re.test(String(email).toLowerCase());
+    // }
     
     getPasswordValidationState = () => {
         if (this.state.password.length >= 6 && this.state.password.length <= 15) {
@@ -66,7 +68,7 @@ class Auth extends Component {
 
     getEmailValidationState = () => {
         const email = this.state.email;
-        if (this.validateEmail(email)) {
+        if (validator.isEmail(email)) {
             return 'success';
         } else {
             return 'error';
@@ -93,6 +95,8 @@ class Auth extends Component {
                 Sign in
             </Button>;
 
+        let headline = this.state.isLogin ? "Log in" : "Register";
+
         let confirmPasswordInput = 
             this.state.isLogin ? 
             null :
@@ -103,7 +107,7 @@ class Auth extends Component {
                     <Col componentClass={ControlLabel} sm={2} smOffset={1}>
                         Confirm Password
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={7}>
                         <FormControl 
                             type="password" 
                             placeholder="Confirm Password" 
@@ -117,7 +121,7 @@ class Auth extends Component {
         if (!this.isValidSubmit()) {
             submitButton = 
             <Button type="submit" disabled bsStyle="danger">
-                Sign in
+                Sign {this.state.isLogin ? "In" : "Up"}
             </Button>;
         }
 
@@ -127,49 +131,60 @@ class Auth extends Component {
         </Button>
 
         return (
-            <Form horizontal className='auth' onSubmit={this.onSubmit}>
-                <Row>
-                    <FormGroup 
-                        controlId="formHorizontalEmail"
-                        validationState={this.getEmailValidationState()}>
-                        <Col componentClass={ControlLabel} sm={2} smOffset={1}>
-                            Email
-                        </Col>
-                        <Col sm={4}>
-                            <FormControl 
-                                type="email" 
-                                placeholder="Email" 
-                                value={this.state.email}
-                                onChange={this.handleEmailChange}/>
-                        </Col>
-                    </FormGroup>
-                </Row>
-                <Row>
-                    <FormGroup 
-                        controlId="formHorizontalPassword"
-                        validationState={this.getPasswordValidationState()}>
-                        <Col componentClass={ControlLabel} sm={2} smOffset={1}>
-                            Password
-                        </Col>
-                        <Col sm={4}>
-                            <FormControl 
-                                type="password" 
-                                placeholder="Password" 
-                                value={this.state.password}
-                                onChange={this.handlePasswordChange}/>
-                        </Col>
-                    </FormGroup>
-                </Row>
-                {confirmPasswordInput}
-                <Row>
-                    <FormGroup>
-                        <Col sm={3} smOffset={3}>
-                            {submitButton}
-                            {switchAuthButton}
-                        </Col>
-                    </FormGroup>
-                </Row>
-            </Form>
+            <Row>
+                <Col sm={4} smOffset={4}>
+                    <Well>
+                        <Form horizontal className='auth' onSubmit={this.onSubmit}>
+                            <Row>
+                                <Col sm={6} smOffset={3}>
+                                    <h3 className="text-center">{headline}</h3>
+                                </Col>
+                            </Row>
+                            <Row>                                
+                                <FormGroup 
+                                    controlId="formHorizontalEmail"
+                                    validationState={this.getEmailValidationState()}>
+                                    <Col componentClass={ControlLabel} sm={2} smOffset={1}>
+                                        Email
+                                    </Col>
+                                    <Col sm={7}>
+                                        <FormControl 
+                                            type="email" 
+                                            placeholder="Email" 
+                                            value={this.state.email}
+                                            onChange={this.handleEmailChange}/>
+                                    </Col>
+                                </FormGroup>
+                            </Row>
+                            <Row>
+                                <FormGroup 
+                                    controlId="formHorizontalPassword"
+                                    validationState={this.getPasswordValidationState()}>
+                                    <Col componentClass={ControlLabel} sm={2} smOffset={1}>
+                                        Password
+                                    </Col>
+                                    <Col sm={7}>
+                                        <FormControl 
+                                            type="password" 
+                                            placeholder="Password" 
+                                            value={this.state.password}
+                                            onChange={this.handlePasswordChange}/>
+                                    </Col>
+                                </FormGroup>
+                            </Row>
+                            {confirmPasswordInput}
+                            <Row>
+                                <FormGroup>
+                                    <Col sm={7} smOffset={3}>
+                                        {submitButton}
+                                        {switchAuthButton}
+                                    </Col>
+                                </FormGroup>
+                            </Row>
+                        </Form>
+                    </Well>
+                </Col>
+            </Row>
         );
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace BudgetV2.Api.Authentication
+﻿namespace BudgetV2.Api.Authentication.Contracts
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
