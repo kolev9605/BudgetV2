@@ -29,7 +29,7 @@
         }
 
         //POST api/auth/login
-        [HttpPost("[action]")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid)
@@ -49,7 +49,7 @@
         }
 
         //POST api/auth/register
-        [HttpPost("[action]")]
+        [HttpPost("register")]
         public async Task<ActionResult> Register([FromBody]RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)

@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-import Root from './components/Root'
+import Root from './components/Root';
 
 ReactDOM.render(
-    <Root/>, 
+    <Root />,
     document.getElementById('root')
 );
     

@@ -4,16 +4,17 @@ import thunk from 'redux-thunk';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import App from '../containers/App';
-import rootReducer from '../store/reducers/root'
+import rootReducer from '../store/reducers/root';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
+
 function root() {
     return (
         <Provider store={store}>
-            <BrowserRouter>
-                <App />            
+            <BrowserRouter>                
+                    <App />
             </BrowserRouter>
         </Provider>
     )

@@ -10,12 +10,14 @@ export const authStart = () => {
 export const authSuccess = (authData) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData: authData
+        authToken: authData.auth_token,
+        userId: authData.id
     }
 }
 
 
 export const authFail = (error) => {
+    console.log(error)
     return {
         type: actionTypes.AUTH_FAIL,
         error: error
@@ -36,8 +38,8 @@ export const login = (email, password) => {
                 dispatch(authSuccess(response.data));
             })
             .catch(err => {
-                console.log(err);
-                dispatch(authFail(err));
+                console.log(err.response)
+                dispatch(authFail(err.response));
             });
     }
 }
@@ -58,8 +60,8 @@ export const register = (email, password, confirmPassword) => {
                 dispatch(authSuccess(response.data));
             })
             .catch(err => {
-                console.log(err);
-                dispatch(authFail(err));
+                console.log(err.response)
+                dispatch(authFail(err.response));
             });
     }
 }

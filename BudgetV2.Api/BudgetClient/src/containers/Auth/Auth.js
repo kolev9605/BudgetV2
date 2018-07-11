@@ -5,6 +5,7 @@ import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import validator from 'validator';
 import { Well } from 'react-bootstrap';
+import { PulseLoader } from 'react-spinners';
 
 class Auth extends Component {
 
@@ -25,6 +26,7 @@ class Auth extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
+        console.log('Submitvam')
         if (this.state.isLogin) {
             this.props.onLogin(this.state.email, this.state.password);
         } else {
@@ -44,11 +46,6 @@ class Auth extends Component {
     handleConfirmPasswordChange = (e) => {
         this.setState({ confirmPassword: e.target.value });
     }
-
-    // validateEmail = (email) => {
-    //     var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    //     return re.test(String(email).toLowerCase());
-    // }
     
     getPasswordValidationState = () => {
         if (this.state.password.length >= 6 && this.state.password.length <= 15) {
@@ -76,8 +73,9 @@ class Auth extends Component {
     }
 
     isValidSubmit = () => {
-        let isValid = this.getEmailValidationState() === 'success' && this.getPasswordValidationState() === 'success';
 
+        let isValid = this.getEmailValidationState() === 'success' && this.getPasswordValidationState() === 'success';
+        console.log('ISVALID: ' + isValid)
         if (this.state.isLogin === false) {
             return isValid && this.getConfirmPasswordValidationState() === 'success';
         }
@@ -90,6 +88,7 @@ class Auth extends Component {
     }
 
     render() {
+
         let submitButton = 
             <Button type="submit" bsStyle="success" onClick={this.handleSubmit}>
                 Sign in
@@ -104,10 +103,10 @@ class Auth extends Component {
                 <FormGroup 
                     controlId="formHorizontalPassword"
                     validationState={this.getConfirmPasswordValidationState()}>
-                    <Col componentClass={ControlLabel} sm={2} smOffset={1}>
+                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
                         Confirm Password
                     </Col>
-                    <Col sm={7}>
+                    <Col md={7}>
                         <FormControl 
                             type="password" 
                             placeholder="Confirm Password" 
@@ -128,15 +127,15 @@ class Auth extends Component {
         let switchAuthButton = 
         <Button bsStyle="link" onClick={this.handleSwitchAuth}>
             {this.state.isLogin ? 'Register now!' : 'Login now!'}
-        </Button>
+        </Button> 
 
         return (
             <Row>
-                <Col sm={4} smOffset={4}>
+                <Col md={6} mdOffset={3}>
                     <Well>
                         <Form horizontal className='auth' onSubmit={this.onSubmit}>
                             <Row>
-                                <Col sm={6} smOffset={3}>
+                                <Col md={6} mdOffset={3}>
                                     <h3 className="text-center">{headline}</h3>
                                 </Col>
                             </Row>
@@ -144,10 +143,10 @@ class Auth extends Component {
                                 <FormGroup 
                                     controlId="formHorizontalEmail"
                                     validationState={this.getEmailValidationState()}>
-                                    <Col componentClass={ControlLabel} sm={2} smOffset={1}>
+                                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
                                         Email
                                     </Col>
-                                    <Col sm={7}>
+                                    <Col md={7}>
                                         <FormControl 
                                             type="email" 
                                             placeholder="Email" 
@@ -160,10 +159,10 @@ class Auth extends Component {
                                 <FormGroup 
                                     controlId="formHorizontalPassword"
                                     validationState={this.getPasswordValidationState()}>
-                                    <Col componentClass={ControlLabel} sm={2} smOffset={1}>
+                                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
                                         Password
                                     </Col>
-                                    <Col sm={7}>
+                                    <Col md={7}>
                                         <FormControl 
                                             type="password" 
                                             placeholder="Password" 
@@ -175,13 +174,19 @@ class Auth extends Component {
                             {confirmPasswordInput}
                             <Row>
                                 <FormGroup>
-                                    <Col sm={7} smOffset={3}>
+                                    <Col md={7} mdOffset={3}>
                                         {submitButton}
                                         {switchAuthButton}
                                     </Col>
                                 </FormGroup>
                             </Row>
                         </Form>
+                        <div className='sweet-loading text-center'>
+                            <PulseLoader
+                                color={'#A5A5AF'} 
+                                loading={this.props.loading} 
+                            />
+                        </div>
                     </Well>
                 </Col>
             </Row>
@@ -196,4 +201,10 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+const mapStateToProps = state => {
+    return {
+        loading: state.authReducer.loading
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
