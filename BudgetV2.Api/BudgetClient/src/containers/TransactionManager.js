@@ -1,34 +1,23 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import api from '../api'
+import * as actions from '../store/actions/index'
 
 import {Row, Col} from 'react-bootstrap';
 
 class TransactionManager extends Component {
     componentDidMount() {
-        api
-            .get('values')
-            .then(res => {
-                console.log(res);
-            })
+        this.props.getCategories(this.props.token);
     }
 
     render() {
-        let testTransaction = {
-            id: Math.random(),
-            amount: 200,
-            name: "Test"
-        }
-
         return (
             <Row className="show-grid">
                 <Col md={2}>
                     <div>
                         <ul>
-                            {this.props.arr.map(i => <li key={i.id}>{i.name} {i.amount}</li>)}
+                            {this.props.categories.map(i => <li key={i.id}>{i.name}</li>)}
                         </ul>
                     </div>
-                    <button onClick={() => this.props.addTransaction(testTransaction)}>Add Transaction</button>
                 </Col>
             </Row>
 
@@ -37,17 +26,16 @@ class TransactionManager extends Component {
 };
 
 const mapStateToProps = state => {
-    return {arr: state.transactionsReducer.transactions}
+    return {
+        categories: state.categoriesReducer.categories,
+        token: state.authReducer.authToken
+    }
+
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        addTransaction: (tr) => dispatch({
-            type: 'ADD',
-            data: {
-                tr: tr
-            }
-        })
+        getCategories: (token) => dispatch(actions.getCategories(token))
     }
 }
 

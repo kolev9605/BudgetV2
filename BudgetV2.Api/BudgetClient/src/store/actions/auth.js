@@ -1,6 +1,20 @@
 import * as actionTypes from '../actions/actionTypes';
 import axios from '../../api'
 
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(() =>{
+            dispatch(logout());
+        }, expirationTime * 1000);
+    }
+}
+
+export const logout = () => {
+    return {
+        type: actionTypes.LOGOUT
+    }
+}
+
 export const authStart = () => {
     return {
         type: actionTypes.AUTH_START
@@ -14,7 +28,6 @@ export const authSuccess = (authData) => {
         userId: authData.id
     }
 }
-
 
 export const authFail = (error) => {
     console.log(error)
@@ -36,6 +49,7 @@ export const login = (email, password) => {
             .then(response => {
                 console.log(response);
                 dispatch(authSuccess(response.data));
+                dispatch(checkAuthTimeout(response.data.expires_in));
             })
             .catch(err => {
                 console.log(err.response)
@@ -58,6 +72,7 @@ export const register = (email, password, confirmPassword) => {
             .then(response => {
                 console.log(response);
                 dispatch(authSuccess(response.data));
+                dispatch(checkAuthTimeout(response.expires_in));
             })
             .catch(err => {
                 console.log(err.response)

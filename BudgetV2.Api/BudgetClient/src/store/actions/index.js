@@ -1,4 +1,9 @@
 export {
     login, 
-    register
+    register,
+    logout
 } from './auth'
+
+export {
+    getCategories
+} from './categories'

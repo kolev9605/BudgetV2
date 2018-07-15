@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import {Form, FormGroup, FormControl, Col, ControlLabel, Button, Row} from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 import './Auth.css';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import validator from 'validator';
 import { Well } from 'react-bootstrap';
 import { PulseLoader } from 'react-spinners';
+import { ToastContainer } from "react-toastr";
 
 class Auth extends Component {
 
@@ -26,13 +28,15 @@ class Auth extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        console.log('Submitvam')
         if (this.state.isLogin) {
             this.props.onLogin(this.state.email, this.state.password);
         } else {
             this.props.onRegister(this.state.email, this.state.password, this.state.confirmPassword);
         }
-        
+
+        if(this.props.authToken != null) {
+            this.props.history.push("/");
+        }
     }
 
     handleEmailChange = (e) => {
@@ -73,7 +77,6 @@ class Auth extends Component {
     }
 
     isValidSubmit = () => {
-
         let isValid = this.getEmailValidationState() === 'success' && this.getPasswordValidationState() === 'success';
         console.log('ISVALID: ' + isValid)
         if (this.state.isLogin === false) {
@@ -88,7 +91,6 @@ class Auth extends Component {
     }
 
     render() {
-
         let submitButton = 
             <Button type="submit" bsStyle="success" onClick={this.handleSubmit}>
                 Sign in
@@ -129,64 +131,87 @@ class Auth extends Component {
             {this.state.isLogin ? 'Register now!' : 'Login now!'}
         </Button> 
 
-        return (
+        let form =
+        <Form horizontal className='auth' onSubmit={this.onSubmit}>
             <Row>
                 <Col md={6} mdOffset={3}>
+                    <h3 className="text-center">{headline}</h3>
+                </Col>
+            </Row>
+            <Row>                                
+                <FormGroup 
+                    controlId="formHorizontalEmail"
+                    validationState={this.getEmailValidationState()}>
+                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
+                        Email
+                    </Col>
+                    <Col md={7}>
+                        <FormControl 
+                            type="email" 
+                            placeholder="Email" 
+                            value={this.state.email}
+                            onChange={this.handleEmailChange}/>
+                    </Col>
+                </FormGroup>
+            </Row>
+            <Row>
+                <FormGroup 
+                    controlId="formHorizontalPassword"
+                    validationState={this.getPasswordValidationState()}>
+                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
+                        Password
+                    </Col>
+                    <Col md={7}>
+                        <FormControl 
+                            type="password" 
+                            placeholder="Password" 
+                            value={this.state.password}
+                            onChange={this.handlePasswordChange}/>
+                    </Col>
+                </FormGroup>
+            </Row>
+            {confirmPasswordInput}
+            <Row>
+                <FormGroup>
+                    <Col md={7} mdOffset={3}>
+                        {submitButton}
+                        {switchAuthButton}
+                    </Col>
+                </FormGroup>
+            </Row>
+        </Form>;
+
+        let loadingIndicator =
+        <div className='sweet-loading text-center'>
+            <PulseLoader
+                color={'#A5A5AF'} 
+                loading={this.props.loading} 
+            />
+        </div>;
+
+        if(this.props.isAuthenticated) {
+            form = <Redirect to='/'/>
+        }
+
+        let container;
+
+
+
+        return (            
+            <Row>                
+                <Col md={6} mdOffset={3}>
                     <Well>
-                        <Form horizontal className='auth' onSubmit={this.onSubmit}>
-                            <Row>
-                                <Col md={6} mdOffset={3}>
-                                    <h3 className="text-center">{headline}</h3>
-                                </Col>
-                            </Row>
-                            <Row>                                
-                                <FormGroup 
-                                    controlId="formHorizontalEmail"
-                                    validationState={this.getEmailValidationState()}>
-                                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
-                                        Email
-                                    </Col>
-                                    <Col md={7}>
-                                        <FormControl 
-                                            type="email" 
-                                            placeholder="Email" 
-                                            value={this.state.email}
-                                            onChange={this.handleEmailChange}/>
-                                    </Col>
-                                </FormGroup>
-                            </Row>
-                            <Row>
-                                <FormGroup 
-                                    controlId="formHorizontalPassword"
-                                    validationState={this.getPasswordValidationState()}>
-                                    <Col componentClass={ControlLabel} md={2} mdOffset={1}>
-                                        Password
-                                    </Col>
-                                    <Col md={7}>
-                                        <FormControl 
-                                            type="password" 
-                                            placeholder="Password" 
-                                            value={this.state.password}
-                                            onChange={this.handlePasswordChange}/>
-                                    </Col>
-                                </FormGroup>
-                            </Row>
-                            {confirmPasswordInput}
-                            <Row>
-                                <FormGroup>
-                                    <Col md={7} mdOffset={3}>
-                                        {submitButton}
-                                        {switchAuthButton}
-                                    </Col>
-                                </FormGroup>
-                            </Row>
-                        </Form>
-                        <div className='sweet-loading text-center'>
-                            <PulseLoader
-                                color={'#A5A5AF'} 
-                                loading={this.props.loading} 
+                        {this.props.loading ? loadingIndicator : form}
+                        <ToastContainer
+                            ref={ref => container = ref}
+                            className="toast-top-right"
+                        />
+                        <button
+                            className="primary"
+                            onClick={() =>
+                                container.success('HELLO')
+                            }
                             />
-                        </div>
                     </Well>
                 </Col>
             </Row>
@@ -203,7 +228,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => {
     return {
-        loading: state.authReducer.loading
+        loading: state.authReducer.loading,
+        isAuthenticated: state.authReducer.authToken !== null
     }
 }
 

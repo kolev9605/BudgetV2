@@ -6,7 +6,9 @@ namespace BudgetV2.Api
     using BudgetV2.Api.Helpers;
     using BudgetV2.Data;
     using BudgetV2.Data.Models;
+    using BudgetV2.Data.Models.Enums;
     using BudgetV2.Infrastructure;
+    using BudgetV2.Infrastructure.ColorGenerator;
     using BudgetV2.Services;
     using BudgetV2.Services.Contracts;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,6 +22,7 @@ namespace BudgetV2.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using System.Text;
 
@@ -44,11 +47,13 @@ namespace BudgetV2.Api
             services.AddDbContext<BudgetDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            this.ConfigureAuthService(services);
-
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IUserService, UserService>();
+
+            services.AddScoped<IColorGenerator, ColorGenerator>();
+
+            this.ConfigureAuthService(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

@@ -5,11 +5,13 @@
     using BudgetV2.Api.Helpers;
     using BudgetV2.Api.ViewModels;
     using BudgetV2.Data.Models;
+    using BudgetV2.Services.Contracts;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System.Security.Claims;
+    using System.Threading;
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
@@ -19,13 +21,20 @@
         private readonly SignInManager<User> signInManager;
         private readonly IJwtFactory jwtFactory;
         private readonly JwtIssuerOptions jwtOptions;
+        private readonly ICategoryService categoryService;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtFactory jwtFactory, IOptions<JwtIssuerOptions> jwtOptions)
+        public AuthController(
+            UserManager<User> userManager, 
+            SignInManager<User> signInManager, 
+            ICategoryService categoryService,
+            IJwtFactory jwtFactory, 
+            IOptions<JwtIssuerOptions> jwtOptions)
         {
             this.userManager = userManager;
             this.jwtFactory = jwtFactory;
             this.jwtOptions = jwtOptions.Value;
             this.signInManager = signInManager;
+            this.categoryService = categoryService;
         }
 
         //POST api/auth/login
@@ -58,7 +67,8 @@
                 var result = await userManager.CreateAsync(user, registerViewModel.Password);
                 if (result.Succeeded)
                 {
-                    //await this.userCategoryService.SaveInitialUserCategoriesAsync(user.Id);
+                    await this.categoryService.SavePrimaryCategoriesAsync(user.Id);
+                    
                     return Ok();
                 }
                 else

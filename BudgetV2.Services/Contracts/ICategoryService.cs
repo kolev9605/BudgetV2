@@ -18,5 +18,7 @@
         Task<IEnumerable<CategoryInfoServiceModel>> GetAllCategoriesInfo();
 
         IEnumerable<string> GetAllCategoryColors();
+
+        Task<bool> SavePrimaryCategoriesAsync(string userId);
     }
 }

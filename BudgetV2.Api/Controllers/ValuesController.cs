@@ -27,7 +27,7 @@
 
         // GET api/values
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser")]
         public async Task<IEnumerable<CategoryInfoServiceModel>> Get()
         {
             var categories = await this.categoryService.GetAllCategoriesInfo();

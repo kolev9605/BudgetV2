@@ -109,5 +109,21 @@
 
         public IEnumerable<string> GetAllCategoryColors()
             => this.context.Categories.Select(c => c.RgbColorValue);
+
+        public async Task<bool> SavePrimaryCategoriesAsync(string userId)
+        {
+            var primaryCategories = this.context.Categories
+                .Where(c => c.IsPrimary)
+                .Select(c => c.Id);
+
+            context.UserCategories.AddRange(primaryCategories.Select(pc => new UserCategory
+            {
+                CategoryId = pc,
+                UserId = userId
+            }));
+
+            var result = await this.context.SaveChangesAsync();
+            return result > 0;
+        }
     }
 }

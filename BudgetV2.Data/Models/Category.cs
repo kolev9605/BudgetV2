@@ -18,6 +18,8 @@
         [Required]
         public string RgbColorValue { get; set; }
 
+        public bool IsPrimary { get; set; }
+
         public List<UserCategory> UserCategories { get; set; } = new List<UserCategory>();
     }
 }
