@@ -1,5 +1,6 @@
 ﻿namespace BudgetV2.Services
 {
+    using AutoMapper;
     using AutoMapper.QueryableExtensions;
     using BudgetV2.Data.Models;
     using BudgetV2.Data.Models.Enums;
@@ -17,11 +18,13 @@
     {
         private readonly BudgetDbContext context;
         private readonly UserManager<User> userManager;
+        private readonly IMapper mapper;
 
-        public CategoryService(BudgetDbContext context, UserManager<User> userManager)
+        public CategoryService(BudgetDbContext context, UserManager<User> userManager, IMapper mapper)
         {
             this.context = context;
             this.userManager = userManager;
+            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<CategoryInfoServiceModel>> GetAllUserCategoriesByTypeAsync(string userId, TransactionType transactionType)
@@ -29,7 +32,7 @@
             var categories = await this.context.UserCategories
                 .Where(uc => uc.UserId == userId && uc.Category.TransactionType == transactionType)
                 .Select(uc => uc.Category)
-                .ProjectTo<CategoryInfoServiceModel>()
+                .ProjectTo<CategoryInfoServiceModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
             return categories;
@@ -103,7 +106,7 @@
         public async Task<IEnumerable<CategoryInfoServiceModel>> GetAllCategoriesInfo()
         {
             return await this.context.Categories
-                .ProjectTo<CategoryInfoServiceModel>()
+                .ProjectTo<CategoryInfoServiceModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
         }
 

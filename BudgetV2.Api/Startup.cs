@@ -47,6 +47,7 @@ namespace BudgetV2.Api
             services.AddDbContext<BudgetDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddAutoMapper(typeof(MapperProfile).GetTypeInfo().Assembly);
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<IUserService, UserService>();
@@ -57,7 +58,6 @@ namespace BudgetV2.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddAutoMapper(typeof(MapperProfile).GetTypeInfo().Assembly);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

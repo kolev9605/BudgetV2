@@ -31,7 +31,7 @@
             var transactions = await this.context
                 .Transactions
                 .Where(t => t.UserId == userId)
-                .ProjectTo<TransactionServiceModel>()
+                .ProjectTo<TransactionServiceModel>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
             return transactions;
