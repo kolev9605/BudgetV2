@@ -206,12 +206,6 @@ class Auth extends Component {
                             ref={ref => container = ref}
                             className="toast-top-right"
                         />
-                        <button
-                            className="primary"
-                            onClick={() =>
-                                container.success('HELLO')
-                            }
-                            />
                     </Well>
                 </Col>
             </Row>
