@@ -1,6 +1,6 @@
-﻿namespace BudgetV2.Api.ViewModels
+﻿namespace BudgetV2.Api.Models
 {
-    public class LoginViewModel
+    public class LoginModel
     {
         public string Username { get; set; }
 

@@ -3,7 +3,7 @@
     using BudgetV2.Api.Authentication;
     using BudgetV2.Api.Authentication.Contracts;
     using BudgetV2.Api.Helpers;
-    using BudgetV2.Api.ViewModels;
+    using BudgetV2.Api.Models;
     using BudgetV2.Data.Models;
     using BudgetV2.Services.Contracts;
     using Microsoft.AspNetCore.Identity;
@@ -11,7 +11,6 @@
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System.Security.Claims;
-    using System.Threading;
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
@@ -39,7 +38,7 @@
 
         //POST api/auth/login
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login([FromBody]LoginModel loginViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -59,7 +58,7 @@
 
         //POST api/auth/register
         [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody]RegisterViewModel registerViewModel)
+        public async Task<ActionResult> Register([FromBody]RegisterModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
