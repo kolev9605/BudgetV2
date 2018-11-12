@@ -3,7 +3,7 @@ import axios from '../../api'
 
 export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
-        setTimeout(() =>{
+        setTimeout(() => {
             dispatch(logout());
         }, expirationTime * 1000);
     }

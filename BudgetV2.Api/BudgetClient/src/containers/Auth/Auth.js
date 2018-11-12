@@ -5,9 +5,7 @@ import './Auth.css';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import validator from 'validator';
-import { Well } from 'react-bootstrap';
 import { PulseLoader } from 'react-spinners';
-import { ToastContainer } from "react-toastr";
 
 class Auth extends Component {
 
@@ -189,24 +187,14 @@ class Auth extends Component {
             />
         </div>;
 
-        if(this.props.isAuthenticated) {
+        if (this.props.isAuthenticated) {
             form = <Redirect to='/'/>
         }
-
-        let container;
-
-
 
         return (            
             <Row>                
                 <Col md={6} mdOffset={3}>
-                    <Well>
-                        {this.props.loading ? loadingIndicator : form}
-                        <ToastContainer
-                            ref={ref => container = ref}
-                            className="toast-top-right"
-                        />
-                    </Well>
+                    {this.props.loading ? loadingIndicator : form}
                 </Col>
             </Row>
         );

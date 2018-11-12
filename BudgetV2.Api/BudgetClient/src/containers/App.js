@@ -5,6 +5,7 @@ import TransactionManager from './TransactionManager';
 import Auth from './Auth/Auth';
 import Logout from './Logout'
 
+
 export default class App extends Component {
     render() {
         return (

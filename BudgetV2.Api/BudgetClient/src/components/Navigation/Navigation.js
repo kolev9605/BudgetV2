@@ -1,41 +1,42 @@
 import React from 'react'
-import {Navbar, Nav, NavItem} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.svg';
 import './Navigation.css';
 
-function navigation (props) {
+import { AppBar, Toolbar, Typography, Button, Grid } from '@material-ui/core';
 
-    let authLink = props.isAuthenticated ? 
-                <Nav pullRight>
-                    <LinkContainer to='/logout' exact>
-                        <NavItem eventKey={2}>                       
-                                Logout
-                        </NavItem>
-                    </LinkContainer>
-                </Nav> :
-                <Nav pullRight>
-                    <LinkContainer to='/auth' exact>
-                        <NavItem eventKey={2}>                       
-                                Sign in
-                        </NavItem>
-                    </LinkContainer>
-                </Nav>;
+function navigation(props) {
+    
+    let authLink = props.isAuthenticated ?
+        <Link to='/logout' exact>
+            <Button>
+                Logout
+            </Button>
+        </Link> :
+        <Link to='/auth' exact>
+            <Button>
+                Sign in
+            </Button>
+        </Link>;
 
     return (
-        <Navbar collapseOnSelect staticTop fluid>
-            <Navbar.Header>
-                <Navbar.Brand>
-                    <LinkContainer to='/' exact className='logo-link'>
-                        <img className='logo' src={logo} alt='logo'/>
-                    </LinkContainer>
-                </Navbar.Brand>
-            <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse>
-                {authLink}
-            </Navbar.Collapse>
-        </Navbar>
+        <AppBar position="static" color="default">
+            <Toolbar>
+                <Grid justify="space-between" container spacing={24}>
+                    <Grid item>
+                        <Link to='/'>
+                            <Button>
+                                <img className='logo' src={logo} alt='logo' />
+                            </Button>
+                        </Link>
+                    </Grid>
+
+                    <Grid item>
+                        {authLink}
+                    </Grid>
+                </Grid>
+            </Toolbar>
+        </AppBar>
     )
 }
 
