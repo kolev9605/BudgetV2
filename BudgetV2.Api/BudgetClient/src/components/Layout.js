@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import Navigation from '../components/Navigation/Navigation';
-import { Grid } from 'react-bootstrap';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import Navigation from '../components/Navigation';
+import {Grid} from '@material-ui/core'
 
 class Layout extends Component {
     render() {
         return (
             <div>
-                <Navigation isAuthenticated = {this.props.isAuthenticated} />
+                <Navigation isAuthenticated={this.props.isAuthenticated}/>
                 <main>
-                    <Grid fluid>
+                    <Grid>
                         {this.props.children}
                     </Grid>
                 </main>

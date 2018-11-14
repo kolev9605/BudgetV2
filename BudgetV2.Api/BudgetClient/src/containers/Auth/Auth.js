@@ -6,6 +6,7 @@ import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import validator from 'validator';
 import { PulseLoader } from 'react-spinners';
+import { TextField, Paper } from '@material-ui/core';
 
 class Auth extends Component {
 
@@ -40,6 +41,12 @@ class Auth extends Component {
     handleEmailChange = (e) => {
         this.setState({ email: e.target.value });
     }
+
+    handleChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
 
     handlePasswordChange = (e) => {
         this.setState({ password: e.target.value });
@@ -151,6 +158,7 @@ class Auth extends Component {
                             onChange={this.handleEmailChange}/>
                     </Col>
                 </FormGroup>
+
             </Row>
             <Row>
                 <FormGroup 
@@ -191,13 +199,41 @@ class Auth extends Component {
             form = <Redirect to='/'/>
         }
 
-        return (            
-            <Row>                
-                <Col md={6} mdOffset={3}>
-                    {this.props.loading ? loadingIndicator : form}
-                </Col>
-            </Row>
+        let form2 = 
+        <Paper margin="dense" style={styles.formPaper}>
+            <form>
+                <TextField 
+                    label="Email"
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    style={styles.formInputs}
+                />
+                <TextField 
+                    label="Password"
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                    style={styles.formInputs}
+                />
+            </form>
+        </Paper>
+
+        return (
+            <div>
+                {this.props.loading ? loadingIndicator : form2}
+            </div>
         );
+    }
+}
+
+const styles = {
+    formPaper : {
+        marginLeft: "50px",
+        marginRight: "50px"
+    },
+    formInputs : {
+        margin: "10px 40px"
     }
 }
 

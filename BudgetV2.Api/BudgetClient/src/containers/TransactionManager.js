@@ -30,7 +30,6 @@ const mapStateToProps = state => {
         categories: state.categoriesReducer.categories,
         token: state.authReducer.authToken
     }
-
 }
 
 const mapDispatchToProps = dispatch => {

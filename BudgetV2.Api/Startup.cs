@@ -97,15 +97,15 @@ namespace BudgetV2.Api
                     template: "{controller}/{action=Index}/{id?}");
             });
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "BudgetClient";
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "BudgetClient";
 
-                if (env.IsDevelopment())
-                {
-                    spa.UseReactDevelopmentServer(npmScript: "start");
-                }
-            });
+            //    if (env.IsDevelopment())
+            //    {
+            //        //spa.UseReactDevelopmentServer(npmScript: "start");
+            //    }
+            //});
         }
 
         private void ConfigureAuthService(IServiceCollection services)
