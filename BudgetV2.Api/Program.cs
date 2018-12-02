@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BudgetV2.Api
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -23,7 +23,7 @@ namespace BudgetV2.Api
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-
+                
                 var context = services.GetRequiredService<BudgetDbContext>();
                 var colorGenerator  = services.GetRequiredService<IColorGenerator>();
                 DatabaseSeeder.SeedDatabase(context, colorGenerator);

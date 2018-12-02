@@ -103,7 +103,7 @@ namespace BudgetV2.Api
 
             //    if (env.IsDevelopment())
             //    {
-            //        //spa.UseReactDevelopmentServer(npmScript: "start");
+            //        spa.UseReactDevelopmentServer(npmScript: "start");
             //    }
             //});
         }

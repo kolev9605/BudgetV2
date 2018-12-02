@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import * as actions from '../store/actions/index'
-
-import {Row, Col} from 'react-bootstrap';
+import { Row, Col } from 'react-simple-flex-grid';
 
 class TransactionManager extends Component {
     componentDidMount() {
@@ -11,7 +10,7 @@ class TransactionManager extends Component {
 
     render() {
         return (
-            <Row className="show-grid">
+            <Row>
                 <Col md={2}>
                     <div>
                         <ul>

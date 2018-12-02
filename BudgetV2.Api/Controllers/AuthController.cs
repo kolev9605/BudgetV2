@@ -11,6 +11,7 @@
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using System.Security.Claims;
+    using System.Threading;
     using System.Threading.Tasks;
 
     [Route("api/[controller]")]
@@ -87,7 +88,8 @@
             //get the user to verifty
             var userToVerify = await this.userManager.FindByNameAsync(userName);
 
-            if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
+            if (userToVerify == null)
+                return await Task.FromResult<ClaimsIdentity>(null);
 
             //check the credentials
             if (await this.userManager.CheckPasswordAsync(userToVerify, password))

@@ -6,7 +6,7 @@
     using BudgetV2.Data.Models;
     using BudgetV2.Data.Models.Enums;
     using BudgetV2.Services.Contracts;
-    using BudgetV2.Services.Models;
+    using BudgetV2.Services.Models.Transaction;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
@@ -16,14 +16,17 @@
     public class TransactionService : ITransactionService
     {
         private readonly BudgetDbContext context;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
         public TransactionService(
             BudgetDbContext context,
-            IMapper mapper)
+            IMapper mapper,
+            IUserService userService)
         {
             this.context = context;
             this.mapper = mapper;
+            this.userService = userService;
         }
 
         public async Task<IEnumerable<TransactionServiceModel>> GetAllByUserIdAsync(string userId)
@@ -39,12 +42,6 @@
 
         public async Task<bool> AddTransactionAsync(decimal amount, string userId, int categoryId, string description, TransactionType type)
         {
-            var user = this.context.Users.FirstOrDefault(u => u.Id == userId);
-            if (user == null)
-            {
-                throw new InvalidOperationException($"There is not existing user with id: {userId}.");
-            }
-
             var transaction = new Transaction
             {
                 Amount = amount,
@@ -53,9 +50,9 @@
                 Date = DateTime.UtcNow,
                 Description = description
             };
-
-            user.Balance = type == TransactionType.Income ? user.Balance += amount : user.Balance -= amount;
+            
             var result = await this.context.Transactions.AddAsync(transaction);
+            var balance = await this.userService.AddUserBalanceAsync(userId, amount);
 
             return await this.context.SaveChangesAsync() > 0;
         }
@@ -74,9 +71,9 @@
                 })
                 .FirstOrDefaultAsync();
 
-            if(transaction == null)
+            if (transaction == null)
             {
-                return false;
+                throw new InvalidOperationException("The transaction does not exist.");
             }
 
             var transactionAmount = transaction.Amount;
@@ -87,6 +84,8 @@
             }
 
             user.Balance = transaction.Category.TransactionType == TransactionType.Income ? user.Balance -= transactionAmount: user.Balance += transactionAmount;
+
+            var balance = await this.userService.SubtractUserBalanceAsync(transaction.UserId, transaction.Amount);//TODO: DONT WORK!
             this.context.Transactions.Remove(transaction);
             return await this.context.SaveChangesAsync() > 0;
         }

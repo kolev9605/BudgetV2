@@ -32,7 +32,7 @@ function navigation(props) {
     return (
         <AppBar position="static" color="default">
             <Toolbar>
-                <Grid justify="space-between" container spacing={12} alignItems='center'>
+                <Grid justify="space-between" container spacing={16} alignItems='center'>
                     <Grid item>
                         <Link to='/'>
                             <Button>
