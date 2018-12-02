@@ -1,7 +1,7 @@
 ﻿namespace BudgetV2.Services.Contracts
 {
     using BudgetV2.Data.Models.Enums;
-    using BudgetV2.Services.Models.Transaction;
+    using BudgetV2.Services.Models;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 

@@ -1,4 +1,4 @@
-﻿namespace BudgetV2.Services.Models.Transaction
+﻿namespace BudgetV2.Services.Models
 {
     using BudgetV2.Data.Models;
     using System;

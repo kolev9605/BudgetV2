@@ -1,13 +1,7 @@
-﻿using AutoMapper;
-using BudgetV2.Api.Models;
-using BudgetV2.Data.Models;
+﻿using BudgetV2.Api.Models;
 using BudgetV2.Services.Contracts;
-using BudgetV2.Services.Models;
-using BudgetV2.Services.Models.Transaction;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BudgetV2.Api.Controllers

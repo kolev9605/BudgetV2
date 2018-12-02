@@ -6,7 +6,7 @@
     using BudgetV2.Data.Models;
     using BudgetV2.Data.Models.Enums;
     using BudgetV2.Services.Contracts;
-    using BudgetV2.Services.Models.Transaction;
+    using BudgetV2.Services.Models;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
