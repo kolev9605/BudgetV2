@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import {Form, FormGroup, FormControl, Col, ControlLabel, Button, Row} from 'react-bootstrap';
+import {Form, FormGroup, FormControl, Col, ControlLabel, Row} from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import './Auth.css';
 import * as actions from '../../store/actions/index';
 import { connect } from 'react-redux';
 import validator from 'validator';
 import { PulseLoader } from 'react-spinners';
-import { TextField, Paper } from '@material-ui/core';
+import { TextField, Paper, Button } from '@material-ui/core';
 
 class Auth extends Component {
 
@@ -200,22 +200,27 @@ class Auth extends Component {
         }
 
         let form2 = 
-        <Paper margin="dense" style={styles.formPaper}>
+        <Paper style={styles.formPaper}>
             <form>
                 <TextField 
                     label="Email"
                     variant="outlined"
-                    margin="dense"
-                    fullWidth
-                    style={styles.formInputs}
+                    style={styles.formInputField}
                 />
+                <br/>
                 <TextField 
                     label="Password"
                     variant="outlined"
-                    margin="dense"
-                    fullWidth
-                    style={styles.formInputs}
+                    type="password"
+                    
+                    style={styles.formInputField}
                 />
+                <br/>
+                <Button 
+                    variant="contained"
+                    style={styles.formInput}>
+                    Sign {this.state.isLogin ? "In" : "Up"}
+                </Button>
             </form>
         </Paper>
 
@@ -229,11 +234,18 @@ class Auth extends Component {
 
 const styles = {
     formPaper : {
-        marginLeft: "50px",
-        marginRight: "50px"
+        marginLeft: "100px",
+        marginRight: "100px",
+        marginTop: "30px",
+        padding: "20px",
+        textAlign:"center"
     },
-    formInputs : {
-        margin: "10px 40px"
+    formInputField : {
+        width : "70%",
+        paddingBottom: "10px"
+    },
+    formInput : {
+        paddingBottom: "10px"
     }
 }
 
